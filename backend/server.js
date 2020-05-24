@@ -11,16 +11,21 @@ app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
-    })
+    });
 
-app.get('/messages', (req, res) => {
+var api = express.Router();
+
+api.get('/messages', (req, res) => {
 	res.send(messages);
     });
 
-app.post('/message', (req, res) => {
-        console.log(req.body);
+api.post('/messages', (req, res) => {
+        //console.log(req.body);
+	messages.push(req.body);
 	// need to add a send status back or the Rest request will just hang forever
 	res.sendStatus(200);
     });
 
-app.listen(1234);
+app.use('/api', api);
+
+app.listen(63145);
