@@ -5,3 +5,7 @@ body {
      background:#eeeeee;
 
 margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.card {
+      margin: 8px;
+}

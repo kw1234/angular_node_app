@@ -3,16 +3,13 @@ import {WebService} from './web.service';
 
 @Component({
 	selector: 'messages',
-	template:` 
-	this is the messages component
+	template:`
 	<div *ngFor="let message of messages">
-	     <mat-card style="margin:8px">
+	     <mat-card class="card">
 		<mat-card-header>
-		<mat-card-title>{{message.text}}</mat-card-title>
+		<mat-card-title>{{message.owner}}</mat-card-title>
 		</mat-card-header>
-		<mat-card-content>
-                by {{message.owner}}
-		   </mat-card-content>
+		<mat-card-content> {{message.text}} </mat-card-content>
 	     </mat-card>
 	</div>`
 })
