@@ -23,7 +23,7 @@ api.post('/messages', (req, res) => {
         //console.log(req.body);
 	messages.push(req.body);
 	// need to add a send status back or the Rest request will just hang forever
-	res.sendStatus(200);
+	res.json(req.body);
     });
 
 app.use('/api', api);
