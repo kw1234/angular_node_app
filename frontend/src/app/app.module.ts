@@ -8,16 +8,18 @@ import {HttpModule} from '@angular/http';
 import {MatInputModule} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NewMessageComponent } from './new-message.component';
 import { MessagesComponent } from './messages.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {NavComponent} from './nav.component';
 
 @NgModule({
   declarations: [
-    AppComponent, MessagesComponent, NewMessageComponent
+    AppComponent, MessagesComponent, NewMessageComponent, NavComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatToolbarModule
   ],
   providers: [WebService],
   bootstrap: [AppComponent]

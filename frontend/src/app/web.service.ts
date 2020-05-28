@@ -18,7 +18,7 @@ export class WebService {
 		var response = await this.http.get(this.BASE_URL+'/messages').toPromise();
            	this.messages = response.json();
 	   } catch (error) {
-	       	this.handleError("unable to get messages ", error);
+	       	this.handleError(`unable to get messages with error: ${error}`);
 	   }
        }      
 
@@ -27,7 +27,7 @@ export class WebService {
 	     	 var response = await this.http.post(this.BASE_URL+'/messages', message).toPromise();
            	 this.messages.push(response.json());
 	     } catch(error) {
-	       this.handleError("unable to post message ", error);
+	       this.handleError(`unable to post message with error: ${error}`);
 	     }
        }      
 
