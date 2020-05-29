@@ -9,6 +9,7 @@ import {MatInputModule} from '@angular/material/input';
 import {FormsModule} from '@angular/forms';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {RouterModule} from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,10 +17,22 @@ import { NewMessageComponent } from './new-message.component';
 import { MessagesComponent } from './messages.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {NavComponent} from './nav.component';
+import {HomeComponent} from './home.component';
+import {BaComponent} from './ba.component';
+
+var routes = [
+{
+    path: '',
+    component: HomeComponent
+},
+{
+    path: 'messages',
+    component: MessagesComponent
+}];
 
 @NgModule({
   declarations: [
-    AppComponent, MessagesComponent, NewMessageComponent, NavComponent
+    AppComponent, MessagesComponent, NewMessageComponent, NavComponent, BaComponent, HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +45,8 @@ import {NavComponent} from './nav.component';
     MatInputModule,
     FormsModule,
     MatSnackBarModule,
-    MatToolbarModule
+    MatToolbarModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [WebService],
   bootstrap: [AppComponent]

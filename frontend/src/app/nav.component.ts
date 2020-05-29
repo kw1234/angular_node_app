@@ -5,7 +5,8 @@ import {MatToolbar} from '@angular/material/toolbar';
         selector: 'nav',
         template:`
         <mat-toolbar color="primary">
-		Message Board
+		<button	mat-button routerLink="/">Message Board</button>
+		<button mat-button routerLink="/messages">Messages</button>
 	</mat-toolbar>
         `
 })
