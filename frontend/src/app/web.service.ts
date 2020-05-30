@@ -1,5 +1,6 @@
 import { Http } from '@angular/http';
 'rxjs/add/operator/toPromise';
+import { Subject } from 'rxjs';
 import {Injectable} from '@angular/core';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
@@ -7,7 +8,9 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class WebService {
        BASE_URL = 'http://localhost:63145/api';
 
-       messages = [];
+       private messages = [];
+
+       messageSubject = new Subject();
        
        constructor(private http: Http, private sb: MatSnackBar) {
            //this.getMessages();
@@ -17,6 +20,7 @@ export class WebService {
            user = (user) ? '/' + user:'';
 	   this.http.get(this.BASE_URL+'/messages'+user).subscribe(response => {
                this.messages = response.json();
+	       this.messageSubject.next(this.messages);
 	   }, error => {
                this.handleError(`unable to get messages with error: ${error}`);
 	   });
