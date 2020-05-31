@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
-import {FormBuilder} from '@angular/forms';
+import {FormBuilder, Validators} from '@angular/forms';
 
 @Component({
   moduleId: module.id,
   selector: 'register',
-  templateUrl: 'register.component.html'
+  templateUrl: 'register.component.html',
+  styles: [`
+  	  err
+  `]
 })
 
 export class RegisterComponent {
@@ -12,15 +15,19 @@ export class RegisterComponent {
 
        constructor(private fb: FormBuilder) {
            this.form = fb.group({
-	       firstName: '',
-	       lastName: '',
-	       email: '',
-	       password: '',
-	       confirmPassword: ''
+	       firstName: ['', Validators.required],
+	       lastName: ['', Validators.required],
+	       email: ['', Validators.required],
+	       password: ['', Validators.required],
+	       confirmPassword: ['', Validators.required]
 	   });
        }
 
        onSubmit() {
-           console.log(this.form.value);
-       } 
+           console.log(this.form.valid);
+       }
+
+       isValid(control) {
+           return this.form.controls[control].invalid && this.form.controls[control].touched
+       }
 }
