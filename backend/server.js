@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
+var jwt = require('jsonwebtoken');
 
 var messages = [{text:'lala', owner: 'Mola'}, {text: 'bosa', owner: 'meeshu'}];
 var users = []
@@ -36,8 +37,13 @@ api.post('/messages', (req, res) => {
     });
 
 auth.post('/register', (req, res) => {
-	users.push(req.body);
-        res.json(req.body);
+        var index = users.push(req.body) - 1;
+
+        var user = users[index];
+        user.id = index;
+        // usually, would not hardcode this secret
+        var token = jwt.sign(user.id, '123');
+        res.json(token);
     });
 
 app.use('/api', api);
