@@ -20,6 +20,7 @@ import {NavComponent} from './nav.component';
 import {HomeComponent} from './home.component';
 import {BaComponent} from './ba.component';
 import {RegisterComponent} from './register.component';
+import {AuthService} from './auth.service';
 
 var routes = [
 {
@@ -58,7 +59,7 @@ var routes = [
     MatToolbarModule,
     RouterModule.forRoot(routes)
   ],
-  providers: [WebService],
+  providers: [WebService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
