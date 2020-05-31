@@ -8,9 +8,11 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 export class WebService {
        BASE_URL = 'http://localhost:63145/api';
 
-       private messages = [];
+       private messageStore = [];
 
-       messageSubject = new Subject();
+       private messageSubject = new Subject();
+
+       messages = this.messageSubject.asObservable();
        
        constructor(private http: Http, private sb: MatSnackBar) {
            //this.getMessages();
@@ -19,8 +21,8 @@ export class WebService {
        getMessages(user) {
            user = (user) ? '/' + user:'';
 	   this.http.get(this.BASE_URL+'/messages'+user).subscribe(response => {
-               this.messages = response.json();
-	       this.messageSubject.next(this.messages);
+               this.messageStore = response.json();
+	       this.messageSubject.next(this.messageStore);
 	   }, error => {
                this.handleError(`unable to get messages with error: ${error}`);
 	   });
@@ -29,7 +31,8 @@ export class WebService {
        async postMessage(message) {
        	     try {
 	     	 var response = await this.http.post(this.BASE_URL+'/messages', message).toPromise();
-           	 this.messages.push(response.json());
+           	 this.messageStore.push(response.json());
+		 this.messageSubject.next(this.messageStore);
 	     } catch(error) {
 	       this.handleError(`unable to post message with error: ${error}`);
 	     }
