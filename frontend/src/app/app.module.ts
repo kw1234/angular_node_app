@@ -18,7 +18,6 @@ import { MessagesComponent } from './messages.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {NavComponent} from './nav.component';
 import {HomeComponent} from './home.component';
-import {BaComponent} from './ba.component';
 import {RegisterComponent} from './register.component';
 import {AuthService} from './auth.service';
 
@@ -42,7 +41,7 @@ var routes = [
 
 @NgModule({
   declarations: [
-    AppComponent, MessagesComponent, NewMessageComponent, NavComponent, BaComponent, HomeComponent, RegisterComponent
+    AppComponent, MessagesComponent, NewMessageComponent, NavComponent, HomeComponent, RegisterComponent
   ],
   imports: [
     BrowserModule,
