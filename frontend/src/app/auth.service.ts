@@ -21,27 +21,34 @@ export class AuthService {
     }
 
     login(loginData) {
-
+        this.http.post(this.BASE_URL+'/login', loginData).subscribe(res => {
+	    this.authenticate(res);
+        });
     }
 
     register(user) {
         // dont want to send the confirmPassword to the backend since it is only necess to handle it on frontend
         delete user.confirmPassword;
         this.http.post(this.BASE_URL+'/register', user).subscribe(res => {
-            // adding authentication code to redirect the route to home page if authentication is successful
-	    var authResponse = res.json();
-
-            if(!authResponse.token) return;
-
-            localStorage.setItem(this.TOKEN_KEY, authResponse.token);
-	    localStorage.setItem(this.NAME_KEY, authResponse.firstName);
-            // navigating to the home page given authentication is successful
-	    this.router.navigate(['/']);
+            this.authenticate(res);
         });
     }
 
     logout() {
         localStorage.removeItem(this.TOKEN_KEY);
         localStorage.removeItem(this.NAME_KEY);
+    }
+
+    authenticate(res) {
+        // adding authentication code to redirect the route to home page if authentication is successful
+        var authResponse = res.json();
+
+        if(!authResponse.token) return;
+
+        localStorage.setItem(this.TOKEN_KEY, authResponse.token);
+        localStorage.setItem(this.NAME_KEY, authResponse.firstName);
+        // navigating to the home page given authentication is successful
+        this.router.navigate(['/']);
+
     }
 }

@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 
 var messages = [{text:'lala', owner: 'Mola'}, {text: 'bosa', owner: 'meeshu'}];
-var users = []
+var users = [{firstName: 'a', email: 'a', password: 'a', id: 0}]
 
 // need this to make sense of the body of requests being Posted
 app.use(bodyParser.json());
@@ -36,15 +36,38 @@ api.post('/messages', (req, res) => {
 	res.json(req.body);
     });
 
+auth.post('/login', (req, res) => {
+        var user = users.find(user => user.email == req.body.email);
+	console.log(users);
+	if (!user) 
+	    sendAuthError(res);
+
+	if (user.password == req.body.password)
+	    sendToken(user, res);
+	else
+	    sendAuthError(res);
+    });
+
 auth.post('/register', (req, res) => {
         var index = users.push(req.body) - 1;
+	console.log(users);
 
         var user = users[index];
         user.id = index;
-        // usually, would not hardcode this secret
-        var token = jwt.sign(user.id, '123');
-        res.json({firstName: user.firstName, token});
+
+	sendToken(user, res);
     });
+
+function sendToken(user, res) {
+    // usually, would not hardcode this secret  
+    var token = jwt.sign(user.id, '123');
+    res.json({firstName: user.firstName, token});
+}
+
+function sendAuthError(res) {
+    console.log("error in auth");
+    return res.json({success: false, message: 'email or password incorrect'});
+}
 
 app.use('/api', api);
 app.use('/auth', auth);
