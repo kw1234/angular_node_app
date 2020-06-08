@@ -20,6 +20,10 @@ export class AuthService {
         return !!localStorage.getItem(this.TOKEN_KEY);
     }
 
+    login(loginData) {
+
+    }
+
     register(user) {
         // dont want to send the confirmPassword to the backend since it is only necess to handle it on frontend
         delete user.confirmPassword;
