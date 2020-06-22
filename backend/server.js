@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var login = require('./routes/login');
+var messaging = require('./routes/messaging');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 
@@ -30,7 +32,8 @@ api.get('/messages/:user', (req, res) => {
     });
 
 api.post('/messages', (req, res) => {
-        //console.log(req.body);
+        console.log(req.body);
+	messaging.addMessage(req, res);
 	messages.push(req.body);
 	// need to add a send status back or the Rest request will just hang forever
 	res.json(req.body);

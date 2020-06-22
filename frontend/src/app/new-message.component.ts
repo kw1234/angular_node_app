@@ -22,7 +22,7 @@ export class NewMessageComponent {
 
        constructor(private webService: WebService, private auth: AuthService) {}
 
-       message = {owner:this.auth.name, text: "" }
+       message = {owner:this.auth.name, email:this.auth.email, text: "" }
 
        post() {
        	      this.webService.postMessage(this.message);

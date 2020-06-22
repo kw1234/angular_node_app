@@ -7,6 +7,7 @@ export class AuthService {
 
     BASE_URL = 'http://localhost:63145/auth';
     NAME_KEY = 'name';
+    EMAIL_KEY = 'email';
     TOKEN_KEY = 'token';
 
     // added a router to the constructor to do a redirect once someone is authenticated
@@ -14,6 +15,10 @@ export class AuthService {
 
     get name() {
         return localStorage.getItem(this.NAME_KEY);
+    }
+
+    get email() {
+        return localStorage.getItem(this.EMAIL_KEY);
     }
 
     get isAuthenticated() {
@@ -49,9 +54,10 @@ export class AuthService {
         var authResponse = res.json();
 
         if(!authResponse.token) return;
-
+	console.log(authResponse);
         localStorage.setItem(this.TOKEN_KEY, authResponse.token);
         localStorage.setItem(this.NAME_KEY, authResponse.firstName);
+	localStorage.setItem(this.EMAIL_KEY, authResponse.email);
         // navigating to the home page given authentication is successful
         this.router.navigate(['/']);
 
