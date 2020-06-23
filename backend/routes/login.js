@@ -1,5 +1,6 @@
 var mysql = require('mysql');
 var bcrypt = require('bcrypt');
+var jwt = require('jsonwebtoken');
 
 var connection = mysql.createConnection({
         host     : 'localhost',
@@ -24,54 +25,58 @@ exports.register = async function(req, res) {
     const saltRounds = 10;
     const encryptedPassword = await bcrypt.hash(password, saltRounds);
 
-    var users = {
+    var user = {
+	"id": id,
+	"firstName": req.body.firstName,
+	"lastName": req.body.lastName,
         "email": req.body.email,
         "password": encryptedPassword
     }
 
-    connection.query('insert into users set ?', users, function(error, results, fields) {
+    var sql = `INSERT INTO users (id, firstName, lastName, email, password) VALUES
+    (uuid(), '${user.firstName}', '${user.lastName}',  '${user.email}', '${user.password}')`;
+
+    connection.query(sql, function(error, result, fields) {                                                                                            
             if (error) {
-                res.send({
-                        "code":400, "failed":"error occurred"
-                    });
-            } else {
-                res.send({
-                        "code": 200,
-                        "success": "user registered successfully"
-                    });
-            }
-        });
+		sendRegistrationError(res, error);
+	    }
+	    sendToken(user, res);
+	});
 };
 
 exports.login = async function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
     connection.query('select * from users where email = ?', [email], async function(error, results, fields) {
-            if (error) {
-                res.send({
-                        "code": 400,
-			    "failed": "error occurred"
-			    });
-            } else {
-                if (results.length > 0) {
-                    const comparison = await bcrypt.compare(password, results[0].password);
-                    if (comparison) {
-                        res.send({
-                                "code": 200,
-				    "success": "login successfull"
-				    });
-                    } else {
-                        res.send({
-                                "code": 204,
-				    "success": "Email and password do not match"
-				    });
-                    }
-                } else {
-                    res.send({
-                            "code": 206,
-				"success": "Email does not exist"
-				});
-                }
-            }
+            if (error) throw error;
+            if (results.length > 0) {
+		const comparison = await bcrypt.compare(password, results[0].password);
+		console.log(comparison);
+
+		if (comparison) {
+		    sendToken(results[0], res);
+		} else {
+		    sendAuthError(res);
+		}
+	    } else {
+		sendAuthError(res);
+	    }
         });
 };
+
+function sendToken(user, res) {
+    // usually, would not hardcode this secret (the second param in the jwt.sign() call)
+    // but, not sure how else to keep this secret so keeping it here for now
+    var token = jwt.sign(user.email, '123');
+    res.json({firstName: user.firstName, token});
+}
+
+function sendAuthError(res) {
+    console.log("error in auth");
+    return res.json({success: false, message: 'email or password incorrect'});
+}
+
+function sendRegistrationError(res, error) {
+    console.log("error in registration");
+    return res.json({success: false, message: 'error in registering: '+error});
+}

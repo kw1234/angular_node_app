@@ -6,7 +6,6 @@ var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 
 var messages = [{text:'lala', owner: 'Mola'}, {text: 'bosa', owner: 'meeshu'}];
-var users = [{firstName: 'a', email: 'a', password: 'a', id: 0}]
 
 // need this to make sense of the body of requests being Posted
 app.use(bodyParser.json());
@@ -39,51 +38,28 @@ api.post('/messages', (req, res) => {
 	res.json(req.body);
     });
 
-
+// these two below methods need to be updated to use mysql
 api.get('/users/me', checkAuthenticated, (req,res) => {
-	res.json(users[req.user]);
+	//res.json(users[req.user]);
     });
 
 api.post('/users/me', checkAuthenticated, (req,res) => {
-	var user = users[req.user];
+	//var user = users[req.user];
 
-	user.firstName = req.body.firstName;
-	user.lastName = req.body.lastName;
+	//user.firstName = req.body.firstName;
+	//user.lastName = req.body.lastName;
 
-	res.json(user);
+	//res.json(user);
     });
 
-auth.post('/login', (req, res) => {
-        var user = users.find(user => user.email == req.body.email);
-	console.log(users);
-	if (!user) 
-	    sendAuthError(res);
+auth.post('/login', login.login);
 
-	if (user.password == req.body.password)
-	    sendToken(user, res);
-	else
-	    sendAuthError(res);
-    });
-
-auth.post('/register', (req, res) => {
-        var index = users.push(req.body) - 1;
-	console.log(users);
-
-        var user = users[index];
-        user.id = index;
-
-	sendToken(user, res);
-    });
+auth.post('/register', login.register);
 
 function sendToken(user, res) {
-    // usually, would not hardcode this secret  
+    // usually, would not hardcode this secret                                                                                                           
     var token = jwt.sign(user.id, '123');
     res.json({firstName: user.firstName, token});
-}
-
-function sendAuthError(res) {
-    console.log("error in auth");
-    return res.json({success: false, message: 'email or password incorrect'});
 }
 
 function checkAuthenticated(req, res, next) {
