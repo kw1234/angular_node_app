@@ -32,7 +32,8 @@ export class AuthService {
 
     login(loginData) {
         this.http.post(this.BASE_URL+'/login', loginData).subscribe(res => {
-	    this.authenticate(res);
+	    console.log(loginData.email);
+	    this.authenticate(res, loginData.email);
         });
     }
 
@@ -49,7 +50,7 @@ export class AuthService {
         localStorage.removeItem(this.NAME_KEY);
     }
 
-    authenticate(res) {
+    authenticate(res, email=null) {
         // adding authentication code to redirect the route to home page if authentication is successful
         var authResponse = res.json();
 
@@ -57,7 +58,7 @@ export class AuthService {
 	console.log(authResponse);
         localStorage.setItem(this.TOKEN_KEY, authResponse.token);
         localStorage.setItem(this.NAME_KEY, authResponse.firstName);
-	localStorage.setItem(this.EMAIL_KEY, authResponse.email);
+	localStorage.setItem(this.EMAIL_KEY, email);
         // navigating to the home page given authentication is successful
         this.router.navigate(['/']);
 

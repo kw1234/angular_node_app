@@ -26,7 +26,6 @@ exports.register = async function(req, res) {
     const encryptedPassword = await bcrypt.hash(password, saltRounds);
 
     var user = {
-	"id": id,
 	"firstName": req.body.firstName,
 	"lastName": req.body.lastName,
         "email": req.body.email,

@@ -22,6 +22,7 @@ var auth = express.Router();
 
 api.get('/messages', (req, res) => {
 	res.send(messages);
+	messaging.getMessages(req, res);
     });
 
 api.get('/messages/:user', (req, res) => {
