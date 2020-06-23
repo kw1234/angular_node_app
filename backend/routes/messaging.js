@@ -20,7 +20,7 @@ connection.connect(function(err){
 exports.addMessage = async function(req, res) {
 
     var message = {
-        "name": req.body.owner,
+        "name": req.body.name,
 	"email": req.body.email,
         "text": req.body.text
     }
@@ -30,7 +30,7 @@ exports.addMessage = async function(req, res) {
 
     connection.query(sql, function(error, result, fields) {
             if (error) throw error;
-	    console.log(result);
+	    //console.log(result);
 	    res.json(req.body);
 	    });
 };
@@ -38,7 +38,7 @@ exports.addMessage = async function(req, res) {
 exports.getMessages = async function(req, res) {
     connection.query('select * from messages;', async function(error, results, fields) {
             if (error) throw error;
-            console.log(results);
+            //console.log(results);
 	    res.send(results);
         });
 };

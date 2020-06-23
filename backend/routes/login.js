@@ -39,6 +39,7 @@ exports.register = async function(req, res) {
             if (error) {
 		sendRegistrationError(res, error);
 	    }
+	    console.log(user);
 	    sendToken(user, res);
 	});
 };

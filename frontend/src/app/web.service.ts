@@ -34,6 +34,7 @@ export class WebService {
        	     try {
 	     	 var response = await this.http.post(this.BASE_URL+'/messages', message).toPromise();
            	 this.messageStore.push(response.json());
+		 console.log(response.json());
 		 this.messageSubject.next(this.messageStore);
 	     } catch(error) {
 	       this.handleError(`unable to post message with error: ${error}`);

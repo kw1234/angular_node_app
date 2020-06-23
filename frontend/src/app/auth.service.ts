@@ -41,7 +41,7 @@ export class AuthService {
         // dont want to send the confirmPassword to the backend since it is only necess to handle it on frontend
         delete user.confirmPassword;
         this.http.post(this.BASE_URL+'/register', user).subscribe(res => {
-            this.authenticate(res);
+            this.authenticate(res, user.email);
         });
     }
 
@@ -50,7 +50,7 @@ export class AuthService {
         localStorage.removeItem(this.NAME_KEY);
     }
 
-    authenticate(res, email=null) {
+    authenticate(res, email) {
         // adding authentication code to redirect the route to home page if authentication is successful
         var authResponse = res.json();
 
