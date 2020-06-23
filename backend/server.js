@@ -5,8 +5,6 @@ var messaging = require('./routes/messaging');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 
-var messages = [{text:'lala', owner: 'Mola'}, {text: 'bosa', owner: 'meeshu'}];
-
 // need this to make sense of the body of requests being Posted
 app.use(bodyParser.json());
 
@@ -20,24 +18,11 @@ app.use((req, res, next) => {
 var api = express.Router();
 var auth = express.Router();
 
-api.get('/messages', (req, res) => {
-	res.send(messages);
-	messaging.getMessages(req, res);
-    });
+api.get('/messages', messaging.getMessages);
 
-api.get('/messages/:user', (req, res) => {
-	var user = req.params.user;
-	var result = messages.filter(message => message.owner == user);
-        res.json(result);
-    });
+api.get('/messages/:user', messaging.getMessagesUserSpecific);
 
-api.post('/messages', (req, res) => {
-        console.log(req.body);
-	messaging.addMessage(req, res);
-	messages.push(req.body);
-	// need to add a send status back or the Rest request will just hang forever
-	res.json(req.body);
-    });
+api.post('/messages', messaging.addMessage);
 
 // these two below methods need to be updated to use mysql
 api.get('/users/me', checkAuthenticated, (req,res) => {

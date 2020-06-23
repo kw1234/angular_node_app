@@ -19,31 +19,35 @@ connection.connect(function(err){
 
 exports.addMessage = async function(req, res) {
 
-    //console.log(req.body);
-
     var message = {
         "name": req.body.owner,
 	"email": req.body.email,
         "text": req.body.text
     }
 
-    console.log(message);
-
     var sql = `INSERT INTO messages (userid, id, name, email, text) VALUES
     ((select id from mockUsers.users where mockUsers.users.email = '${message.email}'), uuid(), '${message.name}', '${message.email}', '${message.text}')`;
-
-    //console.log(sql);
 
     connection.query(sql, function(error, result, fields) {
             if (error) throw error;
 	    console.log(result);
+	    res.json(req.body);
 	    });
 };
 
 exports.getMessages = async function(req, res) {
-    var email = req.body.email;
-    connection.query('select * from messages where email = ?', [email], async function(error, results, fields) {
+    connection.query('select * from messages;', async function(error, results, fields) {
             if (error) throw error;
             console.log(results);
+	    res.send(results);
+        });
+};
+
+exports.getMessagesUserSpecific = async function(req, res) {
+    var user = req.params.user;
+    connection.query(`select * from messages where name = '${user}'`, async function(error, results, fields) {
+            if (error) throw error;
+            console.log(results);
+	    res.send(results);
         });
 };

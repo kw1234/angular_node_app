@@ -8,7 +8,7 @@ import {ActivatedRoute} from '@angular/router';
 	<div *ngFor="let message of webService.messages | async">
 	     <mat-card class="card">
 		<mat-card-header>
-		<mat-card-title [routerLink]="['/messages', message.owner]" style="cursor: pointer">{{message.owner}}</mat-card-title>
+		<mat-card-title [routerLink]="['/messages', message.name]" style="cursor: pointer">{{message.name}}</mat-card-title>
 		</mat-card-header>
 		<mat-card-content> {{message.text}} </mat-card-content>
 	     </mat-card>
