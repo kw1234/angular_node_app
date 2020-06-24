@@ -1,5 +1,6 @@
 import { Component } from '@angular/core'
 import {WebService} from './web.service';
+import {AuthService} from './auth.service';
 
 @Component({
         selector: 'user',
@@ -22,14 +23,15 @@ import {WebService} from './web.service';
 
 export class UserComponent {
 
-       constructor(private webService: WebService) {}
+       constructor(private webService: WebService, private auth: AuthService) {}
 
-       model = {firstName: "", lastName: "" }
+       model = {firstName: "", lastName: "", email:""}
 
        ngOnInit() {
            this.webService.getUser().subscribe(res => {
 	       this.model.firstName = res.firstName;
 	       this.model.lastName = res.lastName;
+	       this.model.email = this.auth.email;
 	   });
        }
 

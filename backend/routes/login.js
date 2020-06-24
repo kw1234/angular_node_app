@@ -64,11 +64,52 @@ exports.login = async function(req, res) {
         });
 };
 
+exports.saveUser = async function(req, res) {
+
+    var user = {
+        "firstName": req.body.firstName,
+        "lastName": req.body.lastName,
+        "email": req.body.email
+    }
+
+    console.log(user);
+
+    var sql = `update users set firstName = '${user.firstName}', lastName = '${user.lastName}' where email = '${user.email}'`;
+
+    connection.query(sql, function(error, result, fields) {
+            if (error) sendSaveUserInfoError(res, error);
+            //console.log(user);
+            //sendToken(user, res);
+	    res.send(req.body);
+        });
+};
+
+exports.getUser = async function(req, res) {
+    var email = req.user;
+    var sql = `select firstName, lastName from users where email = '${email}'`;
+    connection.query(sql, async function(error, results, fields) {
+            if (error) throw error;
+	    if (!results || results.length == 0) sendGetUserInfoError(res);
+	    //sending results[0] because results comes wrapped in a list
+            res.send(results[0]);
+        });
+};	
+
 function sendToken(user, res) {
     // usually, would not hardcode this secret (the second param in the jwt.sign() call)
     // but, not sure how else to keep this secret so keeping it here for now
     var token = jwt.sign(user.email, '123');
     res.json({firstName: user.firstName, token});
+}
+
+function sendGetUserInfoError(res) {
+    console.log("error in getting user info");
+    return res.json({success: false, message: 'error in getting user info'});
+}
+
+function sendSaveUserInfoError(res) {
+    console.log("error in saving user info");
+    return res.json({success: false, message: 'error in saving user info'});
 }
 
 function sendAuthError(res) {

@@ -13,6 +13,10 @@ export class AuthService {
     // added a router to the constructor to do a redirect once someone is authenticated
     constructor(private http: Http, private router: Router) {}
 
+    setName(name) {
+        localStorage.setItem(this.NAME_KEY, name);
+    } 
+
     get name() {
         return localStorage.getItem(this.NAME_KEY);
     }

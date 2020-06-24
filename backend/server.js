@@ -25,18 +25,9 @@ api.get('/messages/:user', messaging.getMessagesUserSpecific);
 api.post('/messages', messaging.addMessage);
 
 // these two below methods need to be updated to use mysql
-api.get('/users/me', checkAuthenticated, (req,res) => {
-	//res.json(users[req.user]);
-    });
+api.get('/users/me', checkAuthenticated, login.getUser);
 
-api.post('/users/me', checkAuthenticated, (req,res) => {
-	//var user = users[req.user];
-
-	//user.firstName = req.body.firstName;
-	//user.lastName = req.body.lastName;
-
-	//res.json(user);
-    });
+api.post('/users/me', checkAuthenticated, login.saveUser);
 
 auth.post('/login', login.login);
 

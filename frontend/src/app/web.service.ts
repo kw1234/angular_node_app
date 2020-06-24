@@ -17,7 +17,6 @@ export class WebService {
        messages = this.messageSubject.asObservable();
        
        constructor(private http: Http, private sb: MatSnackBar, private auth: AuthService) {
-           //this.getMessages();
        }
 
        getMessages(user) {
@@ -42,10 +41,11 @@ export class WebService {
        }      
 
        getUser() {
-           return this.http.get(this.BASE_URL + '/users/me', this.auth.tokenHeader).pipe(map(res => res.json()));
+	   return this.http.get(this.BASE_URL + '/users/me', this.auth.tokenHeader).pipe(map(res => res.json()));
        }
 
        saveUser(userData) {
+	  this.auth.setName(userData.firstName);
           return this.http.post(this.BASE_URL + '/users/me', userData, this.auth.tokenHeader).pipe(map(res => res.json()));
        }
 
