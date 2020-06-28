@@ -8,7 +8,7 @@ import {AuthService} from './auth.service';
 
 @Injectable()
 export class WebService {
-       BASE_URL = 'http://localhost:63145/api';
+       BASE_URL = 'http://localhost:8080/api';
 
        private messageStore = [];
 

@@ -5,7 +5,7 @@ import {Router} from '@angular/router';
 @Injectable()
 export class AuthService {
 
-    BASE_URL = 'http://localhost:63145/auth';
+    BASE_URL = 'http://localhost:8080/auth';
     NAME_KEY = 'name';
     EMAIL_KEY = 'email';
     TOKEN_KEY = 'token';

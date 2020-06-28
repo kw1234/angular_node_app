@@ -1,12 +1,15 @@
 var express = require('express');
 var app = express();
 var login = require('./routes/login');
+var path = require('path');
 var messaging = require('./routes/messaging');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 
 // need this to make sense of the body of requests being Posted
 app.use(bodyParser.json());
+
+app.use(express.static('dist/frontend'));
 
 app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", "*");
@@ -17,6 +20,10 @@ app.use((req, res, next) => {
 //create separate routers for api and auth so that the prefixes 'api/' and 'auth/' will be handled by different routers
 var api = express.Router();
 var auth = express.Router();
+
+app.get('/', function(req, res) {
+	res.redirect('/');
+    });
 
 api.get('/messages', messaging.getMessages);
 
@@ -59,4 +66,4 @@ function checkAuthenticated(req, res, next) {
 app.use('/api', api);
 app.use('/auth', auth);
 
-app.listen(63145);
+app.listen(8080);
